@@ -1,66 +1,60 @@
-var stickyHeaders = (function() {
+function stickyTitles(stickies) {
 
-  var $stickies;
+    this.load = function() {
 
-  var load = function(stickies, target) {
+			  stickies.each(function(){
+				
+				    var thisSticky = jQuery(this).wrap('<div class="followWrap" />');
+				        thisSticky.parent().height(thisSticky.outerHeight());
+				
+				    jQuery.data(thisSticky[0], 'pos', thisSticky.offset().top);
 
-    if (typeof stickies === "object" && stickies instanceof jQuery && stickies.length > 0) {
+			  });
+		}
+			
+		this.scroll = function() {
+		
+			  stickies.each(function(i){				
+				
+				    var thisSticky = jQuery(this),
+					      nextSticky = stickies.eq(i+1),
+					      prevSticky = stickies.eq(i-1),
+					      pos = jQuery.data(thisSticky[0], 'pos');
+			
+				    if (pos <= (jQuery(window).scrollTop() + 50 )) {
+					
+					      thisSticky.addClass("fixed");
+					
+					      if (nextSticky.length > 0 && thisSticky.offset().top >= jQuery.data(nextSticky[0], 'pos') - thisSticky.outerHeight() - 50) {
+						
+						        thisSticky.addClass("absolute").css("top", jQuery.data(nextSticky[0], 'pos') - thisSticky.outerHeight());
 
-      $stickies = stickies.each(function() {
-
-        var $thisSticky = $(this);
-  
-        $thisSticky
-            .data('originalPosition', $thisSticky.offset().top)
-            .data('originalHeight', $thisSticky.outerHeight()); 			  
-      });
-
-      target.off("scroll.stickies").on("scroll.stickies", function(event) {
-		    _whenScrolling(event);		
-      });
+					      }
+					
+				    } else {
+					
+					      thisSticky.removeClass("fixed");
+					
+					      if (prevSticky.length > 0 && jQuery(window).scrollTop() <= jQuery.data(thisSticky[0], 'pos')  - prevSticky.outerHeight() - 50) {
+					
+						        prevSticky.removeClass("absolute").removeAttr("style");
+					
+					      }
+					
+				    }
+		    });			
     }
-  };
+}
+	
+jQuery(document).ready(function(){
+	
+		var newStickies = new stickyTitles(jQuery(".followMeBar"));
+		
+		newStickies.load();
+			
+		jQuery(window).on("scroll", function() {
 
-  var _whenScrolling = function(event) {
-    
-    var $scrollTop = $(event.currentTarget).scrollTop();
-
-    $stickies.each(function(i) {			
-
-      var $thisSticky = $(this),
-          $stickyPosition = $thisSticky.data('originalPosition'),
-          $newPosition,
-          $nextSticky;
-
-      if ($stickyPosition <= $scrollTop) {
-        
-        $newPosition = Math.max(0, $scrollTop - $stickyPosition);
-        $nextSticky = $stickies.eq(i + 1);
-        
-        if($nextSticky.length > 0) {
-          
-          $newPosition = Math.min($newPosition, ($nextSticky.data('originalPosition') - $stickyPosition) - $thisSticky.data('originalHeight'));
-        }
-
-      } else {
-        
-        $newPosition = 0;
-      }
-      
-      $thisSticky.css('transform', 'translateY(' + $newPosition + 'px)');
-      
-      //could just as easily use top instead of transform
-      //$thisSticky.css('top', $newPosition + 'px');
-    });
-  };
-
-  return {
-    load: load
-  };
-})();
-
-$(function() {
-  stickyHeaders.load($(".followMeBar"), $(window));
+			  newStickies.scroll();
+		
+		});
 });
-
-
