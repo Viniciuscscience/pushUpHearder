@@ -10,11 +10,11 @@
 			padding: 1%;
 			position: relative;
 			z-index: 1;
-      top: 50px;
+      top: 0px;
 		}
 		.followMeBar.fixed {
 			position: fixed;
-			top: 50px;
+			top: 0px;
 			width: 98%;
 			z-index: 0;
 		}

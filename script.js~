@@ -21,11 +21,11 @@ function stickyTitles(stickies) {
 					      prevSticky = stickies.eq(i-1),
 					      pos = jQuery.data(thisSticky[0], 'pos');
 			
-				    if (pos <= (jQuery(window).scrollTop() + 50 )) {
+				    if (pos <= (jQuery(window).scrollTop() + 0 )) {
 					
 					      thisSticky.addClass("fixed");
 					
-					      if (nextSticky.length > 0 && thisSticky.offset().top >= jQuery.data(nextSticky[0], 'pos') - thisSticky.outerHeight() - 50) {
+					      if (nextSticky.length > 0 && thisSticky.offset().top >= jQuery.data(nextSticky[0], 'pos') - thisSticky.outerHeight() - 0) {
 						
 						        thisSticky.addClass("absolute").css("top", jQuery.data(nextSticky[0], 'pos') - thisSticky.outerHeight());
 
@@ -35,7 +35,7 @@ function stickyTitles(stickies) {
 					
 					      thisSticky.removeClass("fixed");
 					
-					      if (prevSticky.length > 0 && jQuery(window).scrollTop() <= jQuery.data(thisSticky[0], 'pos')  - prevSticky.outerHeight() - 50) {
+					      if (prevSticky.length > 0 && jQuery(window).scrollTop() <= jQuery.data(thisSticky[0], 'pos')  - prevSticky.outerHeight() - 0) {
 					
 						        prevSticky.removeClass("absolute").removeAttr("style");
 					
