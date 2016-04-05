@@ -2,6 +2,7 @@
 			margin: 0;
 			background: #333;
 			color: #fff;
+			min-height:100%;
 		}
 		.followMeBar {
 			background: #222;
@@ -20,4 +21,8 @@
 		}
 		.followMeBar.fixed.absolute {
 			position: absolute;
+		}
+
+		.teste{
+			height: 800px;		
 		}
